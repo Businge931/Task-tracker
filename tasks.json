@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "description": "Wake up at 4:00am",
+    "status": "done",
+    "createdAt": "08-05-2025, 11:35am",
+    "updatedAt": "08-05-2025, 11:37am"
+  },
+  {
+    "id": 2,
+    "description": "Read about CLI's",
+    "status": "in-progress",
+    "createdAt": "08-05-2025, 11:36am",
+    "updatedAt": "08-05-2025, 11:37am"
+  },
+  {
+    "id": 3,
+    "description": "Try out the first quiz",
+    "status": "todo",
+    "createdAt": "08-05-2025, 11:36am",
+    "updatedAt": "08-05-2025, 11:38am"
+  }
+]
