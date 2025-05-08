@@ -283,3 +283,105 @@ func TestHandleMarkStatus(t *testing.T) {
 	}
 }
 
+func TestHandleList(t *testing.T) {
+	_ = os.Remove("tasks.json")
+	defer os.Remove("tasks.json")
+
+	tests := []struct {
+		name        string
+		setupTasks  []task.Task
+		expectPrint string
+	}{
+		{
+			name:       "no tasks",
+			setupTasks: nil,
+			expectPrint: "No tasks found.",
+		},
+		{
+			name:       "one task",
+			setupTasks: []task.Task{{ID: 1, Description: "Test List", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}},
+			expectPrint: "ID: 1\nDescription: Test List\nStatus: todo\nCreated: 08-05-2025, 11:00am\nUpdated: 08-05-2025, 11:00am\n---",
+		},
+		{
+			name:       "multiple tasks",
+			setupTasks: []task.Task{{ID: 1, Description: "Task 1", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}, {ID: 2, Description: "Task 2", Status: "done", CreatedAt: "08-05-2025, 12:00pm", UpdatedAt: "08-05-2025, 12:30pm"}},
+			expectPrint: "ID: 1\nDescription: Task 1\nStatus: todo\nCreated: 08-05-2025, 11:00am\nUpdated: 08-05-2025, 11:00am\n---\nID: 2\nDescription: Task 2\nStatus: done\nCreated: 08-05-2025, 12:00pm\nUpdated: 08-05-2025, 12:30pm\n---",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			_ = os.Remove("tasks.json")
+			if tc.setupTasks != nil {
+				_ = task.SaveTasks(tc.setupTasks)
+			}
+
+			// Capture stdout
+			oldStdout := os.Stdout
+			r, w, _ := os.Pipe()
+			os.Stdout = w
+
+			err := HandleList([]string{"task-cli", "list"})
+
+			w.Close()
+			os.Stdout = oldStdout
+			var buf [4096]byte
+			n, _ := r.Read(buf[:])
+			output := string(buf[:n])
+
+			if tc.expectPrint != "" && !containsAll(output, tc.expectPrint) {
+				t.Errorf("expected output to contain:\n%s\ngot:\n%s", tc.expectPrint, output)
+			}
+			if err != nil {
+				t.Errorf("expected no error, got %v", err)
+			}
+			_ = os.Remove("tasks.json")
+		})
+	}
+}
+
+// containsAll checks if all lines in expected are present in output (order matters)
+func containsAll(output, expected string) bool {
+	for _, line := range splitLines(expected) {
+		if line == "" {
+			continue
+		}
+		if !containsLine(output, line) {
+			return false
+		}
+	}
+	return true
+}
+
+func splitLines(s string) []string {
+	var lines []string
+	start := 0
+	for i := 0; i < len(s); i++ {
+		if s[i] == '\n' {
+			lines = append(lines, s[start:i])
+			start = i + 1
+		}
+	}
+	if start < len(s) {
+		lines = append(lines, s[start:])
+	}
+	return lines
+}
+
+func containsLine(output, line string) bool {
+	return len(line) == 0 || (len(output) >= len(line) && contains(output, line))
+}
+
+func contains(s, substr string) bool {
+	return len(substr) == 0 || (len(s) >= len(substr) && indexOf(s, substr) >= 0)
+}
+
+func indexOf(s, substr string) int {
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return i
+		}
+	}
+	return -1
+}
+
