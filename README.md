@@ -17,6 +17,12 @@ A simple, maintainable, and test-driven command-line application for managing ta
 
 - [Go](https://golang.org/doc/install) 1.18 or newer installed
 
+### Project URL
+
+```sh
+  https://github.com/Businge931/Task-tracker
+```
+
 ### Build
 
 1. Clone this repository:
