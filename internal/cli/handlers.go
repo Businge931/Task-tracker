@@ -70,7 +70,7 @@ func HandleDelete(args []string) error {
 	return nil
 }
 
-func HandleMark(args []string) error {
+func HandleMarkStatus(args []string) error {
 	if len(args) < 4 {
 		return internalerrors.ErrUsageMark
 	}

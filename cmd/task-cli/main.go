@@ -23,7 +23,7 @@ func main() {
 	case "delete":
 		err = cli.HandleDelete(args)
 	case "mark":
-		err = cli.HandleMark(args)
+		err = cli.HandleMarkStatus(args)
 	case "list":
 		err = cli.HandleList(args)
 	default:
