@@ -205,3 +205,81 @@ func TestHandleDelete(t *testing.T) {
 		})
 	}
 }
+
+func TestHandleMarkStatus(t *testing.T) {
+	_ = os.Remove("tasks.json")
+	defer os.Remove("tasks.json")
+
+	// Setup: add a task to mark
+	tasks := []task.Task{{ID: 1, Description: "Mark me", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}}
+	_ = task.SaveTasks(tasks)
+
+	tests := []struct {
+		name        string
+		args        []string
+		expectError error
+		status      string
+		shouldExist bool
+	}{
+		{
+			name:        "valid mark done",
+			args:        []string{"task-cli", "mark", "1", "done"},
+			expectError: nil,
+			status:      "done",
+			shouldExist: true,
+		},
+		{
+			name:        "missing args",
+			args:        []string{"task-cli", "mark", "1"},
+			expectError: internalerrors.ErrUsageMark,
+			status:      "todo",
+			shouldExist: true,
+		},
+		{
+			name:        "non-existent id",
+			args:        []string{"task-cli", "mark", "999", "done"},
+			expectError: nil, // Will return error from MarkTaskStatusByID, but not usage error
+			status:      "",
+			shouldExist: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			err := HandleMarkStatus(tc.args)
+			if tc.expectError != nil {
+				if err == nil || err.Error() != tc.expectError.Error() {
+					t.Errorf("expected error '%v', got '%v'", tc.expectError, err)
+				}
+			} else if tc.name == "non-existent id" {
+				if err == nil {
+					t.Error("expected error for non-existent id, got nil")
+				}
+			} else {
+				if err != nil {
+					t.Fatalf("expected no error, got %v", err)
+				}
+				tasks, err := task.LoadTasks()
+				if err != nil {
+					t.Fatalf("failed to load tasks: %v", err)
+				}
+				found := false
+				for _, tsk := range tasks {
+					if tsk.ID == 1 && tsk.Status == tc.status {
+						found = true
+					}
+				}
+				if tc.status != "" && !found {
+					t.Errorf("task was not marked correctly: %+v", tasks)
+				}
+			}
+			// Clean up for next test
+			_ = os.Remove("tasks.json")
+			if tc.name != "non-existent id" {
+				// Reset original task for next test
+				_ = task.SaveTasks([]task.Task{{ID: 1, Description: "Mark me", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}})
+			}
+		})
+	}
+}
+
