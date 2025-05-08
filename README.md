@@ -20,7 +20,7 @@ A simple, maintainable, and test-driven command-line application for managing ta
 ### Project URL
 
 ```sh
-  https://github.com/Businge931/Task-tracker
+  https://roadmap.sh/projects/task-tracker
 ```
 
 ### Build
