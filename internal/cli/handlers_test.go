@@ -293,18 +293,18 @@ func TestHandleList(t *testing.T) {
 		expectPrint string
 	}{
 		{
-			name:       "no tasks",
-			setupTasks: nil,
+			name:        "no tasks",
+			setupTasks:  nil,
 			expectPrint: "No tasks found.",
 		},
 		{
-			name:       "one task",
-			setupTasks: []task.Task{{ID: 1, Description: "Test List", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}},
+			name:        "one task",
+			setupTasks:  []task.Task{{ID: 1, Description: "Test List", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}},
 			expectPrint: "ID: 1\nDescription: Test List\nStatus: todo\nCreated: 08-05-2025, 11:00am\nUpdated: 08-05-2025, 11:00am\n---",
 		},
 		{
-			name:       "multiple tasks",
-			setupTasks: []task.Task{{ID: 1, Description: "Task 1", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}, {ID: 2, Description: "Task 2", Status: "done", CreatedAt: "08-05-2025, 12:00pm", UpdatedAt: "08-05-2025, 12:30pm"}},
+			name:        "multiple tasks",
+			setupTasks:  []task.Task{{ID: 1, Description: "Task 1", Status: "todo", CreatedAt: "08-05-2025, 11:00am", UpdatedAt: "08-05-2025, 11:00am"}, {ID: 2, Description: "Task 2", Status: "done", CreatedAt: "08-05-2025, 12:00pm", UpdatedAt: "08-05-2025, 12:30pm"}},
 			expectPrint: "ID: 1\nDescription: Task 1\nStatus: todo\nCreated: 08-05-2025, 11:00am\nUpdated: 08-05-2025, 11:00am\n---\nID: 2\nDescription: Task 2\nStatus: done\nCreated: 08-05-2025, 12:00pm\nUpdated: 08-05-2025, 12:30pm\n---",
 		},
 	}
@@ -384,4 +384,3 @@ func indexOf(s, substr string) int {
 	}
 	return -1
 }
-

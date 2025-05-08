@@ -1,23 +1,37 @@
 [
   {
     "id": 1,
-    "description": "Wake up at 4:00am",
-    "status": "done",
-    "createdAt": "08-05-2025, 11:35am",
-    "updatedAt": "08-05-2025, 11:37am"
+    "description": "Wake up at 4:30am",
+    "status": "todo",
+    "createdAt": "08-05-2025, 12:23pm",
+    "updatedAt": "08-05-2025, 12:28pm"
   },
   {
     "id": 2,
-    "description": "Read about CLI's",
-    "status": "in-progress",
-    "createdAt": "08-05-2025, 11:36am",
-    "updatedAt": "08-05-2025, 11:37am"
+    "description": "Brush my teeth",
+    "status": "todo",
+    "createdAt": "08-05-2025, 12:23pm",
+    "updatedAt": "08-05-2025, 12:23pm"
   },
   {
     "id": 3,
-    "description": "Try out the first quiz",
+    "description": "Take a shower",
     "status": "todo",
-    "createdAt": "08-05-2025, 11:36am",
-    "updatedAt": "08-05-2025, 11:38am"
+    "createdAt": "08-05-2025, 12:23pm",
+    "updatedAt": "08-05-2025, 12:23pm"
+  },
+  {
+    "id": 4,
+    "description": "Read about CLI's",
+    "status": "todo",
+    "createdAt": "08-05-2025, 12:26pm",
+    "updatedAt": "08-05-2025, 12:26pm"
+  },
+  {
+    "id": 5,
+    "description": "Start practicing with projects",
+    "status": "todo",
+    "createdAt": "08-05-2025, 12:26pm",
+    "updatedAt": "08-05-2025, 12:26pm"
   }
 ]
